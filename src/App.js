@@ -25,13 +25,18 @@ class App extends Component {
     const city = this.state.city;
     const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=05a4c77487211944ceff0c266384ab5b', {mode: 'cors'});
     const tempData = await response.json();
-    this.setState({data: tempData})
-    console.log(this.state.data)
-    console.log(this.state.data.name)
-    console.log(this.state.data.visibility)
-    console.log(this.state.data.main.temp)    
+    this.setState({data: tempData}) 
+    this.convertToCelcius();  
+    this.convertToFahrenheit();
+  }
+  
+  convertToCelcius = () => {
+    console.log(Math.round((this.state.data.main.temp - 273.15)*100)/100)
   }
 
+  convertToFahrenheit = () => {
+    console.log(Math.round((this.state.data.main.temp*9/5-459.67)*100)/100)
+  }
   render() {
     return (
       <div className="App">
@@ -58,5 +63,7 @@ function RenderResult(props) {
     </div>
   )
 }
+
+
 
 export default App;
