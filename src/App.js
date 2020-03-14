@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { SemipolarLoading } from 'react-loadingg';
 import './App.css';
 
 class App extends Component {
@@ -10,13 +11,18 @@ class App extends Component {
       tempC: '',
       tempF: '',
       errMsg: '',
-      cond: 'cloudy',
-      src: '' 
+      cond: '',
+      src: '',
+      loading: false
     };
   }
   getApi = async() => {
     try {
-      this.setState({errMsg: ''}); 
+      this.setState({
+        errMsg: '',
+        src: '',
+        loading: true 
+      }); 
       const city = this.state.city;
       const apiKey = '05a4c77487211944ceff0c266384ab5b';
       const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid='+apiKey, {mode: 'cors'});
@@ -51,7 +57,8 @@ class App extends Component {
     })
     .then((response) => {
       this.setState({
-        src: response.data.images.original.url
+        src: response.data.images.original.url,
+        loading: false
       })
     })
     .catch((error) => {
@@ -81,6 +88,12 @@ class App extends Component {
 
 
   render() {
+    const showLoading = {
+      display: 'block'
+    }
+    const dontShowLoading = {
+      display: 'none'
+    }
     return (
       <div className="App">
         <header className="App-header">     
@@ -100,7 +113,8 @@ class App extends Component {
               tempF={this.state.tempF}/>
           </div>
         </header>
-        <RenderGif src={this.state.src}/>
+        <SemipolarLoading className='loading' style={(this.state.loading) ? showLoading : dontShowLoading}/>
+        <RenderGif src={this.state.src} />
       </div>
     );
   } 
@@ -110,7 +124,7 @@ class App extends Component {
 function RenderResult(props) {
   return(
     <div>
-      <div>
+      <div className="Result-City">
         {props.city}
       </div>
       
@@ -129,7 +143,9 @@ function RenderGif(props) {
     <div>
       <img className='img' src={props.src} alt=''/>
     </div>
+   
   )
+ 
 }
 
 export default App;

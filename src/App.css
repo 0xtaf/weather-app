@@ -12,10 +12,21 @@
 }
 
 .Result {
-  margin-top: 3%;
+  margin-top: 2%;
+}
+
+.Result-City {
+  border-bottom: 1px solid #ccc;
 }
 
 .img {
+  margin-top: 1%;
   height: auto;
   max-height: 400px;
+}
+
+.sc-iyvyFf {
+  position: absolute;
+  margin-top: 8%;
+  margin-left:48%;
 }
