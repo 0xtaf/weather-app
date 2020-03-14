@@ -9,12 +9,14 @@ class App extends Component {
       city: '',
       tempC: '',
       tempF: '',
-      errMsg: '' 
+      errMsg: '',
+      cond: 'cloudy',
+      src: '' 
     };
   }
   getApi = async() => {
     try {
-      this.setState({errMsg: ""}); 
+      this.setState({errMsg: ''}); 
       const city = this.state.city;
       const apiKey = '05a4c77487211944ceff0c266384ab5b';
       const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid='+apiKey, {mode: 'cors'});
@@ -30,13 +32,31 @@ class App extends Component {
       }); 
       console.log(error)
       console.log(this.state.errMsg)
-    }
-    
+    }    
+  }
+
+  getGifApi = async() => {
+    console.log("gifte")
+    const apiKeyGif = 'U6J6myaHj9i1c2TPzRYhM2DTRpmIrftw';
+    const condition = this.state.cond;
+    fetch('https://api.giphy.com/v1/gifs/translate?api_key='+apiKeyGif+'&s='+condition, {mode: 'cors'})
+    .then((response) => {
+      return (response.json());
+    })
+    .then((response) => {
+      this.setState({
+        src: response.data.images.original.url
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.getApi();
+    this.getGifApi();
   }
 
 
@@ -75,7 +95,7 @@ class App extends Component {
               tempF={this.state.tempF}/>
           </div>
         </header>
-        
+        <RenderGif src={this.state.src}/>
       </div>
     );
   } 
@@ -99,6 +119,12 @@ function RenderResult(props) {
   )
 }
 
-
+function RenderGif(props) {
+  return(
+    <div>
+      <img className='img' src={props.src} alt=''/>
+    </div>
+  )
+}
 
 export default App;
