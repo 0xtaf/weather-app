@@ -3,7 +3,7 @@
 }
 
 .App-header {
-  min-height: 100vh;
+  margin-top: 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,5 +12,5 @@
 }
 
 .Result {
-  border: 1px solid #ccc;
+  margin-top: 3%;
 }
