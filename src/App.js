@@ -21,24 +21,30 @@ class App extends Component {
       const apiKey = '05a4c77487211944ceff0c266384ab5b';
       const response = await fetch('https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid='+apiKey, {mode: 'cors'});
       const tempData = await response.json();
-      this.setState({data: tempData}); 
-      this.convertToCelcius();  
-      this.convertToFahrenheit();
-    } catch(error) {
-      this.setState({
-        errMsg: "Enter a Valid City",
-        tempC: '',
-        tempF: ''
-      }); 
-      console.log(error)
-      console.log(this.state.errMsg)
+      if (tempData.cod === 200){
+        this.setState({data: tempData});
+        this.convertToCelcius();  
+        this.convertToFahrenheit();
+        this.getGifApi();
+      } else if (tempData.cod === '400') {
+        this.setState({
+          errMsg: "Server is not responding"
+        })
+      } else if (tempData.cod === '404') {
+        this.setState({
+          errMsg: "Enter a Valid City"
+        })
+      }
+    } 
+    catch(error) {     
+        console.log(error)
+        console.log(this.state.errMsg)    
     }    
   }
 
   getGifApi = async() => {
-    console.log("gifte")
     const apiKeyGif = 'U6J6myaHj9i1c2TPzRYhM2DTRpmIrftw';
-    const condition = this.state.cond;
+    const condition = this.state.data.weather[0].main;
     fetch('https://api.giphy.com/v1/gifs/translate?api_key='+apiKeyGif+'&s='+condition, {mode: 'cors'})
     .then((response) => {
       return (response.json());
@@ -56,7 +62,6 @@ class App extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.getApi();
-    this.getGifApi();
   }
 
 
