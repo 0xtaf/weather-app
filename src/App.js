@@ -97,13 +97,17 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">     
-          <form onSubmit={this.handleSubmit}>
-            
-            <input 
-              type="text" 
-              onChange={this.changeHandler}
-            />
-            <button type="submit">Search</button>
+          <form 
+            onSubmit={this.handleSubmit}
+            className='form'>
+            <label className="inp">
+              <input 
+                type="text" 
+                placeholder='city'
+                onChange={this.changeHandler}
+              />
+            </label>
+            <button className='fa fa-search' type="submit"></button>
           </form>
           {this.state.errMsg}
           <div className="Result">
